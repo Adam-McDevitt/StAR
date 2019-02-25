@@ -14,6 +14,7 @@ def home():
 instructions = "0"
 @app.route('/getinstructions')
 def get_instructions():
+    global instructions
     ret = instructions
     instructions = "6"
     return ret

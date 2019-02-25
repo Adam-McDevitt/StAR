@@ -22,7 +22,7 @@ def motor_move(id, power):
     Mode 3 is Backwards.
     """
     mode = 2 if power >= 0 else 3
-    cmd_byte = id << 5 | 24 | mode << 1  
+    cmd_byte = id << 5 | 24 | mode << 1
     pwr = int(abs(power) * 2.55)
     bus.write_i2c_block_data(address, 0, [cmd_byte, pwr])
 
@@ -86,7 +86,7 @@ def gradual_start(dir, time_move):
             if i == 5:
                 print('Got to top speed')
                 keep_moving(dir, (time_move-5*time_inc))
-    
+
 # Keep moving
 def keep_moving(dir, time_left):
     keep_moving_delay = 0.1
@@ -141,7 +141,7 @@ def quick_rotation(direction, time_move):
         motor_move(3,-100)
         motor_move(4, 100)
         time.sleep(time_move)
-        stopMotors() 
+        stopMotors()
     else:
         print('COMMAND NOT RECOGNIZED')
     print('Done quick rotation')
@@ -262,7 +262,8 @@ move_diagonal('LEFTDOWN',1)
 time.sleep(0.5)
 move_diagonal('LEFTUP',1)
 '''
-motor_move(2,-100)
-motor_move(4,100)
+# motor_move(2,-100)
+# motor_move(4,100)
+quick_rotation('RIGHT',5)
 time.sleep(5)
 stopMotors()
