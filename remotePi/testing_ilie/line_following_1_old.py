@@ -117,17 +117,16 @@ def turn_left(speed_input):
     if (check_change_rotation()==True):
 
         #print('ACTUALLY TURNING RIGHT WITH SPEED:',speed_input_horizontal)
+      
         motor_move(1, -1*speed_input_horizontal)
-        motor_move(2, -1*speed_input_forward)
+        motor_move(2, speed_input_forward)
         motor_move(3, -1*speed_input_horizontal)
         motor_move(4, -1*speed_input_forward)
-        
 
-        motor1_old=-1*speed_input_horizontal
-        motor2_old=-1*speed_input_forward
-        motor3_old=-1*speed_input_horizontal
-        motor4_old=-1*speed_input_forward
-
+        motor1_old = -1*speed_input_horizontal
+        motor2_old = speed_input_forward
+        motor3_old = -1*speed_input_horizontal
+        motor4_old = -1*speed_input_forward
 
 def turn_right(speed_input):
     global motor1_old,motor2_old,motor3_old,motor4_old
@@ -150,13 +149,13 @@ def turn_right(speed_input):
         motor_move(1, speed_input_horizontal)
         motor_move(2, speed_input_forward)
         motor_move(3, speed_input_horizontal)
-        motor_move(4, speed_input_forward)
+        motor_move(4, -1*speed_input_forward)
         
 
         motor1_old=speed_input_horizontal
         motor2_old=speed_input_forward
         motor3_old=speed_input_horizontal
-        motor4_old=speed_input_forward
+        motor4_old=-1*speed_input_forward
 
 def check_change_forward():
     global motor2_current,motor2_old,motor4_current,motor4_old
