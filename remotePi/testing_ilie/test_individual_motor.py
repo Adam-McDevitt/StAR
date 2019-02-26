@@ -64,21 +64,25 @@ print('ON')
 # motor_move(5,100)
 # motor_move(1, -75)
 # motor_move(2, 75)
-time.sleep(1)
+#motor_move(5, 100)
+#time.sleep(3)
 
 
 
-stopMotors()
-print('OFF')
+#stopMotors()
+#print('OFF')
 
 
 
 
 
 # Move down slow
-# motor_move(1, 40)
-# time.sleep(5)
-# stopMotors()
+motor_move(2, 100)
+motor_move(4, 100)
+motor_move(1, 100)
+motor_move(3, 100)
+time.sleep(5)
+stopMotors()
 # time.sleep(2)
 # motor_move(1, 40)
 # time.sleep(4)
