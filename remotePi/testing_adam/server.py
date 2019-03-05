@@ -6,11 +6,11 @@
 # - Poll the URL http://veemon:5000/getinstructions to receive instructions that have been sent by the app. After an
 # instruction is received by the robot it is reset, so the next time the URL is accessed it will return
 # INSTRUCTION_RESET_VALUE
-# - Add notifications to the notification list with http://veemon:5000/addnotification/not=x where x is the notification
+# - Add notifications to the notification list with http://veemon:5000/addnotification?not=x where x is the notification
 # string to be received by the app.
 #
 # APP:
-# - Send instructions to the robot by accessing http://veemon:5000/setinstructions/inst=x where x is the instruction to
+# - Send instructions to the robot by accessing http://veemon:5000/setinstructions?inst=x where x is the instruction to
 # be received by the robot
 # - Receive notifications from the robot by polling http://veemon:5000/getnotifications. Notifications will be returned
 # as a string, where (if there is more than one notification) notifications are separated by semicolons. After a list of
