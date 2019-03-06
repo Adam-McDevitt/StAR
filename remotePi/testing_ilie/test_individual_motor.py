@@ -74,14 +74,21 @@ print('ON')
 
 
 
-
-
+'''
+Motor movement directions
+`           + | -`
+motor 1:    ->|<-
+motor 2:    up|down
+motor 3:    ->|<-
+motor 4:    up|down
+'''
 # Move down slow
-motor_move(2, 100)
-motor_move(4, 100)
+#motor_move(5,100)
 motor_move(1, 100)
-motor_move(3, 100)
-time.sleep(0.2)
+motor_move(2, 100)
+motor_move(3, -100)
+motor_move(4, -100)
+time.sleep(5)
 stopMotors()
 # time.sleep(2)
 # motor_move(1, 40)

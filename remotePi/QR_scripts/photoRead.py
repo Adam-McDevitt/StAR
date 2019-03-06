@@ -14,7 +14,7 @@ def decodepz(im) :
     # Print results
     for obj in decodedObjects:
         print(obj.data)
-    print("About to return data")
+    # print("About to return data")
     return decodedObjects
 
 os.system("fswebcam -r 1280x720 --no-banner image.jpeg")

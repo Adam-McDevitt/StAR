@@ -60,25 +60,17 @@ def stopMotors():
 # time.sleep(4)
 # motor_move(1, -100)
 # motor_move(3, -100)
-stopMotor(5)
-
-time.sleep(5)
-while True:
-    motor_move(0,-100)
-    time.sleep(4)
-    stopMotor(0)
-    motor_move(0,100)
-    time.sleep(4)
-    stopMotor(0)
-
 
 while True:
-    x=raw_input("enter command\n")
-    print(x)
-    x=x.split(" ")
-    motor_move(0,int(x[0]))
-    time.sleep(int(x[1]))
-    stopMotor(0)
+    motor_move(4,-100)
+    time.sleep(2)
+    stopMotor(4)
+    motor_move(4,100)
+    time.sleep(2)
+    stopMotor(4)
+
+
+
 
 
 

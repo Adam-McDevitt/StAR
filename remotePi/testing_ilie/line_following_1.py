@@ -101,15 +101,15 @@ def stopMotors():
 #-------------------------------------------------------------------------------
 def turn_left(speed_input):
     global motor1_old,motor2_old,motor3_old,motor4_old
-    
+
     if(abs(70 + speed_input)>100):
         speed_input_horizontal = 100
     else:
-        speed_input_horizontal = speed_input + 70     
+        speed_input_horizontal = speed_input + 70
 
     motor1_current=speed_input_horizontal
     motor3_current=speed_input_horizontal
-    
+
     if(abs(50 + speed_input > 80)):
         speed_input_forward = 80
     else:
@@ -121,7 +121,7 @@ def turn_left(speed_input):
         motor_move(2, -1*speed_input_forward)
         motor_move(3, -1*speed_input_horizontal)
         motor_move(4, -1*speed_input_forward)
-        
+
 
         motor1_old=-1*speed_input_horizontal
         motor2_old=-1*speed_input_forward
@@ -131,12 +131,12 @@ def turn_left(speed_input):
 
 def turn_right(speed_input):
     global motor1_old,motor2_old,motor3_old,motor4_old
-    
+
     if(abs(70 + speed_input)>100):
         speed_input_horizontal = 100
     else:
-        speed_input_horizontal = speed_input + 70     
-    
+        speed_input_horizontal = speed_input + 70
+
     motor1_current=speed_input_horizontal
     motor3_current=speed_input_horizontal
 
@@ -151,7 +151,7 @@ def turn_right(speed_input):
         motor_move(2, speed_input_forward)
         motor_move(3, speed_input_horizontal)
         motor_move(4, speed_input_forward)
-        
+
 
         motor1_old=speed_input_horizontal
         motor2_old=speed_input_forward
@@ -172,20 +172,20 @@ def check_change_rotation():
     if(abs(motor1_old-motor1_current)>8):
         motor1_old=motor1_current
         motor3_old=motor3_current
-        return True    
+        return True
     else:
-        return False    
+        return False
 #-------------------------------------------------------------------------------
 #                           Main Loop
 #-------------------------------------------------------------------------------
 
 if __name__== "__main__":
-    
+
     # Globals
     #global ser
     #global line_new_error
     # Main FSM
-    ser = serial.Serial('/dev/ttyACM2',9600)        # connect to arduino
+    ser = serial.Serial('/dev/ttyACM0',9600)        # connect to arduino
     #print('serial name: ',ser)
     # start process
     start_process = True
@@ -266,7 +266,7 @@ if __name__== "__main__":
                 else:
                     pass
             except Exception, e:
-                pass            
+                pass
             #-----------------------------------#
 
 
