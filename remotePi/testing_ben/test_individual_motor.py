@@ -62,12 +62,13 @@ def stopMotors():
 # motor_move(3, -100)
 
 while True:
-    motor_move(4,-100)
-    time.sleep(2)
-    stopMotor(4)
-    motor_move(4,100)
-    time.sleep(2)
-    stopMotor(4)
+    y=int(raw_input("enter motor id\n"))
+    x=int(raw_input("enter speed\n "))
+    z=int(raw_input("enter time\n"))
+    motor_move(y,x)
+    time.sleep(z)
+    stopMotor(y)
+    
 
 
 
