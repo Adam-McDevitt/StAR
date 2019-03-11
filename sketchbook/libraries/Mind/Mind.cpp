@@ -91,7 +91,7 @@ Serial.println();
 }
 
 Mind::Mind(){
-Mind::motor_foward_power=0.0f;
+Mind::motor_foward_power=1.0f;
 Mind::motor_right_power=0.0f;
 
 //Initialise The actual forward and right direction
@@ -110,14 +110,23 @@ Mind::temp[1]=0.f;
 }
 
 
-void Mind::turn_left(bool and_heading){
-
+void Mind::turn_left(bool a,bool h){
     //actuall turning code goes here
-
     //The update the brain
-    Mind::turn_actual(PI/2.0f);
-    if(and_heading){
-    Mind::turn_heading(PI/2.0f);
-    }
+    if(a)Mind::turn_actual(PI/2.0f);
+    if(h)Mind::turn_heading(PI/2.0f);
+}
+
+void Mind::turn_right(bool a,bool h){
+    //actuall turning code goes here
+    //The update the brain
+    if(a)Mind::turn_actual(-PI/2.0f);
+    if(h)Mind::turn_heading(-PI/2.0f);
+}
+void Mind::reverse(bool a,bool h){
+    //actuall turning code goes here
+    //The update the brain
+    if(a)Mind::turn_actual(PI);
+    if(h)Mind::turn_heading(PI);
 }
 

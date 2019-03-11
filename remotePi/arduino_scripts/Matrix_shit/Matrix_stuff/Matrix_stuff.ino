@@ -1,15 +1,15 @@
-#include <MatrixMath.h>
 #include <Mind.h>
 
+#include <MatrixMath.h>
+#include <Wire.h>
+#include <SDPArduino.h>
+#include <QTRSensors.h>
+
+Mind* m = new Mind();
 
 
 void setup(){
-  
   Serial.begin(9600);
- 
-  
-  
-  
  
   
   
@@ -17,15 +17,19 @@ void setup(){
 
 
 void loop(){
+  m->Print_shit();
+  
+  m->turn_right(true,false);
+  m->Print_shit();
+  
+  m->turn_left(false,true);
+  //drive
+  m->Print_shit();
+  
+  
 
-//  turn_actual(-PI/8.0f);
-//  Print_shit();
-//  delay(1000);
-//  turn_heading(-PI/8.0f);
-//  Print_shit();
-//  delay(1000);
 
   
   
-  
+  while(1);
 }

@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include "QTRSensors.h"
 #include <Arduino.h>
-#define use_averaged_values true
 
 
 // Base class constructor
@@ -81,8 +80,6 @@ void QTRSensors::read(unsigned int *sensor_values, unsigned char readMode)
             sensor_values[i] += _maxValue - off_values[i];
         }
     }
-	if (use_averaged_values)
-		sensor_values[4] = (sensor_values[3]+sensor_values[5])/2;
 }
 
 

@@ -1,12 +1,13 @@
 #ifndef Mind_h
 
 #include<MatrixMath.h>
-#include "Arduino.h"
+#include <Arduino.h>
+#include <SDPArduino.h>
 
 class Mind
 {
     public:
-        Mind();
+        
         static const int N=2;
         float motor_foward_power;
         float  motor_right_power;
@@ -27,10 +28,15 @@ class Mind
         void update_motor_powers();
         void turn_heading(float theta);
         void turn_actual(float theta);
-        void Print_shit();
-
-        void turn_left(bool and_heading);
         
+
+    
+        Mind();
+        void turn_left(bool a,bool h);
+        void turn_right(bool a,bool h);
+        void reverse(bool a,bool h);
+
+        void Print_shit();
 };
 
 #endif

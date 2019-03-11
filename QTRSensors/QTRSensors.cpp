@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include "QTRSensors.h"
 #include <Arduino.h>
-#define AVERAGE_BROKEN_SENSORS 0
 
 
 // Base class constructor
