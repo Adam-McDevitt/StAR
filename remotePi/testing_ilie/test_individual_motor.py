@@ -83,12 +83,15 @@ motor 3:    ->|<-
 motor 4:    up|down
 '''
 # Move down slow
-#motor_move(5,100)
-motor_move(1, 100)
-#motor_move(2, 100)
-motor_move(3, 100)
-#motor_move(4, -100)
-time.sleep(2)
+while(True):
+	print("Moving Motors")
+	motor_move(5,100)
+	motor_move(1, 100)
+	motor_move(2, 100)
+	motor_move(3, 100)
+	motor_move(0, 100)
+	motor_move(4, -100)
+	time.sleep(0.2)
 stopMotors()
 # time.sleep(2)
 # motor_move(1, 40)
