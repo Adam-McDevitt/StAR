@@ -19,9 +19,11 @@
 
 from flask import Flask
 from flask import request
+import time
+import serial
 
 app = Flask(__name__)
-INSTRUCTION_RESET_VALUE = "6"
+INSTRUCTION_RESET_VALUE = "0"
 INITIAL_INSTRUCTION = "0"
 
 @app.route('/test')

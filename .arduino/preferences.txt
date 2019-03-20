@@ -38,6 +38,7 @@ export.application.stop=true
 export.delete_target_folder=true
 last.screen.height=1024
 last.screen.width=1280
+last.serial.location=0,28,669,353
 last.sketch.count=0
 last.sketch0.location=0,28,640,962,772
 last.sketch0.path=/tmp/untitled5776522387522274.tmp/sketch_mar05a/sketch_mar05a.ino

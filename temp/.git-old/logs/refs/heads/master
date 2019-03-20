@@ -1,0 +1,16 @@
+0000000000000000000000000000000000000000 8e2ebf2b3a6359f337e0ebec449da0a671dc245c s1642212 <s1642212@sms.ed.ac.uk> 1549463758 +0000	commit (initial): first commit
+8e2ebf2b3a6359f337e0ebec449da0a671dc245c 9a45f69d968b2e32a73d0e2e9c03d30d08dddd6a s1642212 <s1642212@sms.ed.ac.uk> 1549463970 +0000	commit: added rest of the files
+9a45f69d968b2e32a73d0e2e9c03d30d08dddd6a e92658f9e0190196667f6671901f5a5a3087880f s1642212 <s1642212@sms.ed.ac.uk> 1550851909 +0000	commit: routine commit
+e92658f9e0190196667f6671901f5a5a3087880f 10f410a91751a72dd7446875f961fd59c1255515 s1642212 <s1642212@sms.ed.ac.uk> 1550852007 +0000	pull: Merge made by the 'recursive' strategy.
+10f410a91751a72dd7446875f961fd59c1255515 a225eed7acb9d2f1dc5d68c0620845b466b6144c Ben Jourdan <s1629620@sms.ed.ac.uk> 1551090572 +0000	commit: Save before the sensors arrive
+a225eed7acb9d2f1dc5d68c0620845b466b6144c 4693e60be08c0235db92ba41aa6e8785daaed640 Ben Jourdan <s1629620@sms.ed.ac.uk> 1551211504 +0000	commit: 'twas the night before demo 2
+4693e60be08c0235db92ba41aa6e8785daaed640 9e015b824bb23a72ea9661d181eda8bb37da120e Ben Jourdan <s1629620@sms.ed.ac.uk> 1551219901 +0000	commit: hallelujah
+9e015b824bb23a72ea9661d181eda8bb37da120e 7b404eb9361fca2694ca074b350c3761e2265869 s1642212 <s1642212@sms.ed.ac.uk> 1551889077 +0000	commit: deleted shite
+7b404eb9361fca2694ca074b350c3761e2265869 204f5c46df54a776a114abf7e73567786713bfff s1642212 <s1642212@sms.ed.ac.uk> 1551889185 +0000	pull: Merge made by the 'recursive' strategy.
+204f5c46df54a776a114abf7e73567786713bfff 0186733c5bcc1a9efeddac1d2a6018f4d0573958 s1642212 <s1642212@sms.ed.ac.uk> 1551889244 +0000	commit: deleted shite
+0186733c5bcc1a9efeddac1d2a6018f4d0573958 d99d746efd4652429f76e71ab04baa430d215e3c Ben Jourdan <s1629620@sms.ed.ac.uk> 1552047295 +0000	commit: added arduino matrix library and created matrix script (forgot to stage)
+d99d746efd4652429f76e71ab04baa430d215e3c 6ab41c2e13a86537e52634cae4c002ab9acb5cca Ben Jourdan <s1629620@sms.ed.ac.uk> 1552227081 +0000	commit: sunday before demo 3
+6ab41c2e13a86537e52634cae4c002ab9acb5cca 9ec3a052972b864181738396155466375ce4a8ee Ben Jourdan <s1629620@sms.ed.ac.uk> 1552245691 +0000	commit: Created Mind arduino library
+9ec3a052972b864181738396155466375ce4a8ee 8e63c4875ad01b5a2de70a0dca2b19a41e1c00e4 Pieris Kalligeros <s1607754@brogdon.inf.ed.ac.uk> 1552341377 +0000	commit: theNightBeforetheNightBeforeDisaster
+8e63c4875ad01b5a2de70a0dca2b19a41e1c00e4 33603bd97809cded4f7ab97f820465a49eb9bfca Ben Jourdan <s1629620@sms.ed.ac.uk> 1552429152 +0000	commit: Twas the night before demo three, all the batteries charging with glee, the robot was set, there's no need to fret, A five we are bound to get
+33603bd97809cded4f7ab97f820465a49eb9bfca 0350edddf2caa9c486787569a056ba4f992a1f27 s1642212 <s1642212@sms.ed.ac.uk> 1553091832 +0000	commit: deleted .ino file

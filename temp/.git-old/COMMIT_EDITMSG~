@@ -1,0 +1,31 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   .Xauthority
+#	modified:   .arduino/preferences.txt
+#	modified:   .bash_history
+#	new file:   remotePi/Server_Scripts_Adam/.idea/Server_Scripts_Adam.iml
+#	new file:   remotePi/Server_Scripts_Adam/.idea/misc.xml
+#	new file:   remotePi/Server_Scripts_Adam/.idea/modules.xml
+#	new file:   remotePi/Server_Scripts_Adam/.idea/vcs.xml
+#	new file:   remotePi/Server_Scripts_Adam/.idea/workspace.xml
+#	modified:   remotePi/Server_Scripts_Adam/server.py
+#	new file:   remotePi/Server_Scripts_Adam/server.pyc
+#	new file:   remotePi/Server_Scripts_Adam/star.py
+#	new file:   remotePi/arduino_scripts/COMMS/arduino_comms.py
+#	new file:   remotePi/arduino_scripts/COMMS/read_ports.py
+#	new file:   remotePi/arduino_scripts/COMMS/read_ports.pyc
+#	new file:   remotePi/arduino_scripts/COMMS/server.py
+#	new file:   remotePi/arduino_scripts/COMMS/server.pyc
+#	new file:   remotePi/arduino_scripts/pi_to_ard.py
+#	modified:   remotePi/arduino_scripts/test_comms.py
+#	new file:   remotePi/arduino_scripts/test_marios.ino
+#
+#
+# It took 7.26 seconds to enumerate untracked files. 'status -uno'
+# may speed it up, but you have to be careful not to forget to add
+# new files yourself (see 'git help status').
