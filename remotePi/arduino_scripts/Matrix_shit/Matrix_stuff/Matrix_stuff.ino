@@ -3,7 +3,7 @@
 #include <MatrixMath.h>
 #include <Wire.h>
 #include <SDPArduino.h>
-#include <QTRSensors.h>
+
 
 Mind* m = new Mind();
 

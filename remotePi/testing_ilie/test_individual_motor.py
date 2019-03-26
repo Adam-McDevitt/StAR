@@ -53,24 +53,6 @@ def stopMotors():
 #---------------------------------------------------------------------------
 #                     Command to control motor
 #---------------------------------------------------------------------------
-# positive ex 50 - down
-# negative ex -50 - up
-# motor_move(4,  -90)
-# motor_move(2, 90)
-# time.sleep(4)
-# motor_move(1, -100)
-# motor_move(3, -100)
-print('ON')
-# motor_move(5,100)
-# motor_move(1, -75)
-# motor_move(2, 75)
-#motor_move(5, 100)
-#time.sleep(3)
-
-
-
-#stopMotors()
-#print('OFF')
 
 
 
@@ -82,22 +64,12 @@ motor 2:    up|down
 motor 3:    ->|<-
 motor 4:    up|down
 '''
-# Move down slow
-while(True):
-	print("Moving Motors")
-	motor_move(5,100)
-	motor_move(1, 100)
-	motor_move(2, 100)
-	motor_move(3, 100)
-	motor_move(0, 100)
-	motor_move(4, -100)
-	time.sleep(0.2)
+
+
+print('Motors ON')
+#motor_move(1,100)
+motor_move(3,-100)
+time.sleep(5)
 stopMotors()
-# time.sleep(2)
-# motor_move(1, 40)
-# time.sleep(4)
-# stopMotors()
-# time.sleep(2)
-# motor_move(1, 40)
-# time.sleep(4)
-# stopMotors()
+print('Motors OFF')
+
