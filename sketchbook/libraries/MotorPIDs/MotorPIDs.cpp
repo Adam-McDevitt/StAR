@@ -4,9 +4,9 @@
 #include <MotorPIDs.h>
 
 
-double MotorPIDs::update_past(int motor_id,double new_error){
+float MotorPIDs::update_past(int motor_id,float new_error){
  
- double sum=0;
+ float sum=0;
  for(int i=0;i<PAST;i++){
    sum+=pasts[motor_id][i];
  }
@@ -16,6 +16,26 @@ double MotorPIDs::update_past(int motor_id,double new_error){
  
  }
 
+
+void motor_move(int motor_id,int power){
+  if(power<0){
+    Serial.print("motorBackward(motor_id,power) = ");
+    Serial.print(motor_id);
+    Serial.print("  ");
+    Serial.println(power);
+    motorBackward(motor_id,abs(power));
+  }
+  else if(power>=0){
+    Serial.print("motorForward(motor_id,power) = ");
+    Serial.print(motor_id);
+    Serial.print("  ");
+    Serial.println(power);
+    motorForward(motor_id,abs(power));
+  }
+  else{
+    Serial.println("[motor_move]:MOTOR POWER ERROR");
+  }
+}
 void MotorPIDs::MotorPIDsinit(){
    //velocities for all motors initialized to zero
         for(int i=0; i < ROTARY_COUNT;i++){
@@ -33,27 +53,24 @@ void MotorPIDs::MotorPIDsinit(){
         for(int i=0;i < ROTARY_COUNT;i++){
           MotorPIDs::vels_desired[i]=0;
         }
-        // for(int i=0;i < ROTARY_COUNT;i++){
-        //   MotorPIDs::Kps[i]=0;
-        // }
-        // MotorPIDs::Kis[i]=0;
-        // MotorPIDs::Kds[i]=0;
-        // MotorPIDs::directions[i]=0;
-
+        for(int i=0;i < ROTARY_COUNT;i++){
+          MotorPIDs::Kps[i]=0;
+          MotorPIDs::Kis[i]=0;
+          MotorPIDs::Kds[i]=0;
+        }
         //Ki past entries
-        // for(int i=0;i < ROTARY_COUNT;i++){
-        //   for(int j=0;j<PAST;j++){
-        //     MotorPIDs::pasts[i][j]=0;//2d array, can't initialize without for-loop, but C++ initializes to zero by default(check TODO)
-        //   }
-        // }
+        for(int i=0;i < ROTARY_COUNT;i++){
+          for(int j=0;j<PAST;j++){
+            MotorPIDs::pasts[i][j]=0;//2d array, can't initialize without for-loop, but C++ initializes to zero by default(check TODO)
+          }
+        }
       
-        // for(int i=0;i < ROTARY_COUNT;i++){
-        //   MotorPIDs::past_counters[i]=0;
-        // }
-        delay(500);
+        for(int i=0;i < ROTARY_COUNT;i++){
+          MotorPIDs::past_counters[i]=0;
+        }
 }
 
-void MotorPIDs::setup_PID(int motor_id, double Kp, double Ki, double Kd){
+void MotorPIDs::setup_PID(int motor_id, float Kp, float Ki, float Kd){
     
     Kps[motor_id]=Kp;
     Kis[motor_id]=Ki;
@@ -61,7 +78,7 @@ void MotorPIDs::setup_PID(int motor_id, double Kp, double Ki, double Kd){
     vels_deltas_old[motor_id]=0.0;
     
     
-    /*
+    
     Serial.print("SETUP PID for motor [ ");
     Serial.print(motor_id);
     Serial.print(" ]: ");
@@ -78,16 +95,11 @@ void MotorPIDs::setup_PID(int motor_id, double Kp, double Ki, double Kd){
     Serial.print("Kd: ");
     Serial.print(Kds[motor_id]);
     Serial.print(" ");
-    */
+    
 }
 
-//TODO: SEE IF setDirection CAN BE IN A CALLBACK (Pieris doesn't think so because: (see next lines)
-/* 
-callbacks are just function names in variables, this is actually a real time change
-of the value of direction which will be accessed by updatePID very fast all the time)
-*/
-void MotorPIDs::setSetpointAndDirection(int motor_id, double vel_desired,int direction){
-    directions[motor_id]=direction;
+
+void MotorPIDs::setSetpoint(int motor_id, float vel_desired){
     vels_desired[motor_id]=vel_desired;
 
     /*
@@ -102,7 +114,7 @@ void MotorPIDs::update_motor_PID(int motor_id) {
   MotorPIDs::update_velocities();
   // calcualte new power
   vels_deltas_new[motor_id] = vels_desired[motor_id] - velocities[motor_id];
-  double vel_adjustment = Kps[motor_id] * vels_deltas_new[motor_id] + Kds[motor_id] * (vels_deltas_new[motor_id] - vels_deltas_old[motor_id]) + Kis[motor_id] *MotorPIDs::update_past(motor_id,vels_deltas_new[motor_id]);
+  float vel_adjustment = Kps[motor_id] * vels_deltas_new[motor_id] + Kds[motor_id] * (vels_deltas_new[motor_id] - vels_deltas_old[motor_id]) + Kis[motor_id] * MotorPIDs::update_past(motor_id,vels_deltas_new[motor_id]);
   vels_deltas_old[motor_id] = vels_deltas_new[motor_id];
   motor_pows[motor_id] = vel_adjustment;
 
@@ -110,23 +122,14 @@ void MotorPIDs::update_motor_PID(int motor_id) {
   if (motor_pows[motor_id] > 100) {
     motor_pows[motor_id] = 100;
   }
-  else if (motor_pows[motor_id] < 0) {
-    motor_pows[motor_id] = 0;
+  else if (motor_pows[motor_id] < -100) {
+    motor_pows[motor_id] = -100;
   }
 
 
   //Actually moving the motor to correct direction (or stopping) according to callback input
-  if(directions[motor_id]==1){
-      motorForward(motor_id,motor_pows[motor_id]);
-  }
-  else if(directions[motor_id]==-1){
-      motorBackward(motor_id,-1*motor_pows[motor_id]);
-  }
-  else if(directions[motor_id]==0){
-      motorStop(motor_id);
-  }
-
-
+  //motor_move(motor_id,motor_pows[motor_id]);
+  motor_move(motor_id,motor_pows[motor_id]);
 }
 
 
@@ -137,33 +140,32 @@ void MotorPIDs::update_velocities(){
   for(int i=0;i<ROTARY_COUNT;i++){
    velocities[i]=0.0; 
   }
-  MotorPIDs::printVelocities();
   for(int i=0;i<repeats;i++){
     Wire.requestFrom(ROTARY_SLAVE_ADDRESS, ROTARY_COUNT);
     for (int i = 0; i < ROTARY_COUNT; i++) {
-      velocities[i] += (double) Wire.read();  // Must cast to signed 8-bit type
-    }
-    
-    MotorPIDs::printVelocities();
-    delay(50);
+      velocities[i] += (float) (int8_t) Wire.read();  // Must cast to signed 8-bit type
+      // Serial.print('INTERMEDIATE:');
+      // Serial.println(velocities[i]);
+    }    
+    delay(5);
   }
   for(int i=0;i<ROTARY_COUNT;i++){
-   velocities[i]=(velocities[i]/(double)repeats)*(PI/180)*20; 
+   velocities[i]=(velocities[i]/(float)repeats)*(PI/180)*200; 
   }
-  
+      
 }
 
 void MotorPIDs::printVelocities() {
 
-  //Serial.print("Motor velocities: ");
+  Serial.print("Motor velocities: ");
 
   for (int i = 0; i < ROTARY_COUNT; i++) {
-    /*
+    
     Serial.print(velocities[i]);
     Serial.print(' ');
-    */
+    
   }
-  // Serial.println();
+  Serial.println();
   
 }
 

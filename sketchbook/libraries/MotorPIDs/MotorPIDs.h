@@ -13,40 +13,42 @@ class MotorPIDs
 {   
 
 
-    double update_past(int motor_id,double new_error);
-    void update_velocities();
+    float update_past(int motor_id,float new_error);
+
     
 
     public:
     void MotorPIDsinit();
-    void setup_PID(int motor_id, double Kp, double Ki, double Kd);
-    void setSetpointAndDirection(int motor_id,double vel_desired, int direction);
+    void setup_PID(int motor_id, float Kp, float Ki, float Kd);
+    void setSetpoint(int motor_id,float vel_desired);
     void update_motor_PID(int motor_id);
+    void update_velocities();
     void printVelocities();
+    void motorMove(int motor_id,int power);
     
         MotorPIDs();
         static const int ROTARY_SLAVE_ADDRESS=5;
-        static const int ROTARY_COUNT=6;
-        static const int PAST=150;
+        
+        static const int PAST=30;
 
         //to calculate velocities
-        double velocities[ROTARY_COUNT];
+        static const int ROTARY_COUNT=6;
+        float velocities[ROTARY_COUNT];
 
         // GLOBAL VALUES for ALL PIDS
-        double motor_pows[ROTARY_COUNT];
-        double vels_deltas_new[ROTARY_COUNT];
-        double vels_deltas_old[ROTARY_COUNT];
+        float motor_pows[ROTARY_COUNT];
+        float vels_deltas_new[ROTARY_COUNT];
+        float vels_deltas_old[ROTARY_COUNT];
 
         
         //VALUES TO BE CHANGED BY CALLBACK (TODO)
-        double Kps[ROTARY_COUNT];
-        double Kis[ROTARY_COUNT];
-        double Kds[ROTARY_COUNT];
-        double vels_desired[ROTARY_COUNT];
-        int directions[ROTARY_COUNT];
+        float Kps[ROTARY_COUNT];
+        float Kis[ROTARY_COUNT];
+        float Kds[ROTARY_COUNT];
+        float vels_desired[ROTARY_COUNT];
 
         //for Ki past entries
-        double pasts[ROTARY_COUNT][PAST];
+        float pasts[ROTARY_COUNT][PAST];
         int past_counters[ROTARY_COUNT];
 
 
