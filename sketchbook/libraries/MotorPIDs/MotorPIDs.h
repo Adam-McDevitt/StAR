@@ -14,7 +14,7 @@ class MotorPIDs
 
 
     float update_past(int motor_id,float new_error);
-
+   
     
 
     public:
@@ -24,10 +24,12 @@ class MotorPIDs
     void update_motor_PID(int motor_id);
     void update_velocities();
     void printVelocities();
-    void motorMove(int motor_id,int power);
+    void motor_move(int motor_id,float power);
+    bool check_change_forward(int motor_id,float power);
     
         MotorPIDs();
         static const int ROTARY_SLAVE_ADDRESS=5;
+        static const int OLD_POWS_SIZE=4;
         
         static const int PAST=30;
 
@@ -40,6 +42,9 @@ class MotorPIDs
         float vels_deltas_new[ROTARY_COUNT];
         float vels_deltas_old[ROTARY_COUNT];
 
+        float old_pows[OLD_POWS_SIZE];    
+        
+        
         
         //VALUES TO BE CHANGED BY CALLBACK (TODO)
         float Kps[ROTARY_COUNT];

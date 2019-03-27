@@ -23,6 +23,12 @@
 #include <SDPArduino.h>
 #include <Wire.h>
 // #include <Rotary.h>
+#include <MotorPIDs.h>
+
+// CONSTATSFOR ROTARY ENCODER
+#define ROTARY_SLAVE_ADDRESS 5;
+#define PAST 150;
+MotorPIDs* test=new MotorPIDs();
 
 // Libraries used for sesnor control
 #include <QTRSensors.h>
@@ -37,13 +43,14 @@
 #define EMITTER_PIN2   39
 #define EMITTER_PIN3   38
 #define PAST           30
+#define DEFAULT_MOTOR_SPEED 4.5
 
 //--------------------Globals for motor control-------------------
 
 //PID SHIT
-float Kp = 0.5;
+float Kp = 2.0/3500.0;
 float Ki=0;
-float Kd = 0.05;
+float Kd = 2.0/35000.0;
 float pasts [PAST] ={0.0};
 int ERROR_calib = 3500;
 
@@ -126,7 +133,139 @@ QTRSensors qtrrc3;
 QTRSensors qtrrcs[4];
 unsigned int sensorValues[NUM_BOARDS][NUM_SENSORS];
 
+//-------------------------------------------------------------------------------
+//                             PID FUNCTIONS
+//-------------------------------------------------------------------------------
+void resetPID(){
+  line_new_error=0;
+  line_last_error=0;
+  clear_past();
+}
 
+void updateForwardPID(){
+  double motors_speed_current = motors_speed;
+  line_new_error = sensor_fwd_reading;
+  mottor_adjustment = Kp * line_new_error + Kd * (line_new_error - line_last_error)+Ki*update_past(line_new_error);
+  line_last_error = line_new_error;
+  motors_speed = mottor_adjustment;
+
+  // make sure you don't go over 100
+  if (motors_speed > 100) {
+    motors_speed = 100;
+  }
+  else if (motors_speed < -100) {
+    motors_speed = -100;
+  }
+  Serial.print("Kp: ");
+  Serial.print(Kp);
+  Serial.print(", ");
+  Serial.print("Kd: ");
+  Serial.print(Kd);
+//  Serial.print(", ");
+//  Serial.print("Ki: ");
+//  Serial.println(Ki);
+  Serial.println(); 
+  Serial.print("error = ");
+  Serial.println(line_new_error);
+  Serial.print("motors_speed = ");
+  Serial.println(motors_speed);
+  Serial.println();
+  Serial.println();
+}
+
+
+void updateLeftPID(){
+  double motors_speed_current = motors_speed;
+  line_new_error = sensor_lft_reading;
+  mottor_adjustment = Kp * line_new_error + Kd * (line_new_error - line_last_error)+Ki*update_past(line_new_error);
+  line_last_error = line_new_error;
+  motors_speed = mottor_adjustment;
+
+  // make sure you don't go over 100
+  if (motors_speed > 100) {
+    motors_speed = 100;
+  }
+  else if (motors_speed < -100) {
+    motors_speed = -100;
+  }
+  Serial.print("Kp: ");
+  Serial.print(Kp);
+  Serial.print(", ");
+  Serial.print("Kd: ");
+  Serial.print(Kd);
+//  Serial.print(", ");
+//  Serial.print("Ki: ");
+//  Serial.println(Ki);
+  Serial.println(); 
+  Serial.print("error = ");
+  Serial.println(line_new_error);
+  Serial.print("motors_speed = ");
+  Serial.println(motors_speed);
+  Serial.println();
+  Serial.println();
+}
+
+void updateRightPID(){
+  double motors_speed_current = motors_speed;
+  line_new_error = sensor_rgh_reading;
+  mottor_adjustment = Kp * line_new_error + Kd * (line_new_error - line_last_error)+Ki*update_past(line_new_error);
+  line_last_error = line_new_error;
+  motors_speed = mottor_adjustment;
+
+  // make sure you don't go over 100
+  if (motors_speed > 100) {
+    motors_speed = 100;
+  }
+  else if (motors_speed < -100) {
+    motors_speed = -100;
+  }
+  Serial.print("Kp: ");
+  Serial.print(Kp);
+  Serial.print(", ");
+  Serial.print("Kd: ");
+  Serial.print(Kd);
+//  Serial.print(", ");
+//  Serial.print("Ki: ");
+//  Serial.println(Ki);
+  Serial.println(); 
+  Serial.print("error = ");
+  Serial.println(line_new_error);
+  Serial.print("motors_speed = ");
+  Serial.println(motors_speed);
+  Serial.println();
+  Serial.println();
+}
+
+void updateBackPID(){
+  double motors_speed_current = motors_speed;
+  line_new_error = sensor_bck_reading;
+  mottor_adjustment = Kp * line_new_error + Kd * (line_new_error - line_last_error)+Ki*update_past(line_new_error);
+  line_last_error = line_new_error;
+  motors_speed = mottor_adjustment;
+
+  // make sure you don't go over 100
+  if (motors_speed > 100) {
+    motors_speed = 100;
+  }
+  else if (motors_speed < -100) {
+    motors_speed = -100;
+  }
+  Serial.print("Kp: ");
+  Serial.print(Kp);
+  Serial.print(", ");
+  Serial.print("Kd: ");
+  Serial.print(Kd);
+//  Serial.print(", ");
+//  Serial.print("Ki: ");
+//  Serial.println(Ki);
+  Serial.println(); 
+  Serial.print("error = ");
+  Serial.println(line_new_error);
+  Serial.print("motors_speed = ");
+  Serial.println(motors_speed);
+  Serial.println();
+  Serial.println();
+}
 //-------------------------------------------------------------------------------
 //                           Movement functions
 //-------------------------------------------------------------------------------
@@ -390,10 +529,17 @@ void setup() {
   qtrrcs[3].calibrationOn.maximum[7] = 1800;
 
   digitalWrite(13, LOW);     // turn off Arduino's LED to indicate we are through with calibration
-  state = 1;
-  // delay(1000); // Evil
-}
 
+  // SETTING UP ROTARY ENCODER
+  test->MotorPIDsinit();
+  test->setup_PID(4,20,0.8,2);//motor,Kp,Ki,Kd
+  test->setup_PID(2,20,0.8,2);//motor,Kp,Ki,Kd
+  test->setup_PID(1,20,0.8,2);//motor,Kp,Ki,Kd
+  test->setup_PID(3,20,0.8,2);//motor,Kp,Ki,Kd
+
+  Serial.println("Setup is DONE !!!"); 
+}
+  
 void loop() {
   
 
@@ -401,47 +547,42 @@ void loop() {
   //------------------- Sensors values ---------------
 
   // FRONT
-  unsigned int position_front = qtrrcs[0].readLineBlack(sensorValues[0]) - ERROR_calib;
-  Serial.print(position_front); // comment this line out if you are using raw values
-  Serial.print(' ');
-  // RIGHT
-  unsigned int position_right_raw = qtrrcs[1].readLineBlack(sensorValues[1]) - ERROR_calib;
-  unsigned int position_right = 7000 - position_right_raw;
-  Serial.print(position_right); // comment this line out if you are using raw values
-  Serial.print(' ');
+   int position_front = qtrrcs[2].readLineBlack(sensorValues[2]) - ERROR_calib;
+//  Serial.print(position_front); // comment this line out if you are using raw values
+//  Serial.print(' ');
+
+  
+   int position_right_raw = qtrrcs[0].readLineBlack(sensorValues[0]) - ERROR_calib;
+   int position_right = -position_right_raw;
+//  Serial.print(position_right); // comment this line out if you are using raw values
+//  Serial.print(' ');
   // BACK
-  unsigned int position_back = qtrrcs[2].readLineBlack(sensorValues[2]) - ERROR_calib;
-  Serial.print(position_back); // comment this line out if you are using raw values
-  Serial.print(' ');
+   int position_back = -(qtrrcs[1].readLineBlack(sensorValues[1]) - ERROR_calib);
+//  Serial.print(position_back); // comment this line out if you are using raw values
+//  Serial.print(' ');
   //LEFT
-  unsigned int position_left = qtrrcs[3].readLineBlack(sensorValues[3]) - ERROR_calib;
-  Serial.print(position_left); // comment this line out if you are using raw values
-  Serial.print(' ');
-  Serial.println(' ');
-  delay(50);
-  //------------------- Motors FSM -------------------
+   int position_left = qtrrcs[3].readLineBlack(sensorValues[3]) - ERROR_calib;
+//  Serial.print(position_left); // comment this line out if you are using raw values
+//  Serial.print(' ');
+//  Serial.println(' ');
+
   sensor_fwd_reading = position_front;
   sensor_rgh_reading = position_right;
   sensor_lft_reading = position_left;
   sensor_bck_reading = position_back;
 
+  updateForwardPID();
+//  test->setSetpoint(2,-1*DEFAULT_MOTOR_SPEED+0.5*abs(motors_speed));
+//  test->setSetpoint(4, -1*DEFAULT_MOTOR_SPEED+0.5*abs(motors_speed));
+  test->setSetpoint(1,-1*motors_speed);
+  test->setSetpoint(3,motors_speed);
 
-  //PID FOR FORWARD
-  double motors_speed_current = motors_speed;
-  line_new_error = sensor_fwd_reading;
-  mottor_adjustment = Kp * line_new_error + Kd * (line_new_error - line_last_error)+Ki*update_past(line_new_error);
-  line_last_error = line_new_error;
-  motors_speed = mottor_adjustment;
+//  test->update_motor_PID(2);
+//  test->update_motor_PID(4);
+  motorBackward(2,80);
+  motorBackward(4,80);
+  test->update_motor_PID(1);
+  test->update_motor_PID(3);
 
-  // make sure you don't go over 100
-  if (motors_speed > 100) {
-    motors_speed = 100;
-  }
-  else if (motors_speed < -100) {
-    motors_speed = -100;
-  }
-
-  Serial.print("motors_speed = ");
-  Serial.print(motors_speed);
 
 }

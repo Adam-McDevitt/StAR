@@ -1,6 +1,6 @@
 #include <SDPArduino.h>
 #include <Wire.h>
-#include<Arduino.h>
+#include <Arduino.h>
 #include <MotorPIDs.h>
 
 
@@ -16,25 +16,32 @@ float MotorPIDs::update_past(int motor_id,float new_error){
  
  }
 
-
-void motor_move(int motor_id,int power){
-  if(power<0){
-    Serial.print("motorBackward(motor_id,power) = ");
-    Serial.print(motor_id);
-    Serial.print("  ");
-    Serial.println(power);
-    motorBackward(motor_id,abs(power));
-  }
-  else if(power>=0){
-    Serial.print("motorForward(motor_id,power) = ");
-    Serial.print(motor_id);
-    Serial.print("  ");
-    Serial.println(power);
-    motorForward(motor_id,abs(power));
+bool MotorPIDs::check_change_forward(int motor_id,float power) {
+  int id=motor_id-1;
+  float old= id;
+  float diff= old-power;
+  if (abs(diff)>8) {
+   old_pows[id]=power;
+    return true;
   }
   else{
-    Serial.println("[motor_move]:MOTOR POWER ERROR");
-  }
+		return false;
+	}
+	return false;
+}
+  
+void MotorPIDs::motor_move(int motor_id,float power){
+  if(MotorPIDs::check_change_forward(motor_id,power)){
+		if(power<0){
+			motorBackward(motor_id,abs(power));
+		}
+		else if(power>=0){
+			motorForward(motor_id,abs(power));
+		}
+		else{
+			Serial.println("[motor_move]:MOTOR POWER ERROR");
+		}
+	}
 }
 void MotorPIDs::MotorPIDsinit(){
    //velocities for all motors initialized to zero
@@ -68,6 +75,10 @@ void MotorPIDs::MotorPIDsinit(){
         for(int i=0;i < ROTARY_COUNT;i++){
           MotorPIDs::past_counters[i]=0;
         }
+        
+        for(int i=0;i < OLD_POWS_SIZE; i++){
+					MotorPIDs::old_pows[i]=0;
+				}
 }
 
 void MotorPIDs::setup_PID(int motor_id, float Kp, float Ki, float Kd){
@@ -129,7 +140,7 @@ void MotorPIDs::update_motor_PID(int motor_id) {
 
   //Actually moving the motor to correct direction (or stopping) according to callback input
   //motor_move(motor_id,motor_pows[motor_id]);
-  motor_move(motor_id,motor_pows[motor_id]);
+  MotorPIDs::motor_move(motor_id,motor_pows[motor_id]);
 }
 
 
@@ -147,10 +158,10 @@ void MotorPIDs::update_velocities(){
       // Serial.print('INTERMEDIATE:');
       // Serial.println(velocities[i]);
     }    
-    delay(5);
+    delay(2);
   }
   for(int i=0;i<ROTARY_COUNT;i++){
-   velocities[i]=(velocities[i]/(float)repeats)*(PI/180)*200; 
+   velocities[i]=(velocities[i]/(float)repeats)*(PI/180)*500; 
   }
       
 }
@@ -173,9 +184,5 @@ void MotorPIDs::printVelocities() {
 MotorPIDs::MotorPIDs(){
         //TODO: NEED TO SEE IF C INITIALISES TO ZERO AUTOMATICALLY
 
-        // SDPsetup();
-
-
-       
-
+        // SDPsetup()
 }
