@@ -75,7 +75,7 @@ def formatinstructions(text):
         pair = pspairs[i].split(',')
         package = pair[0]
         shelf = pair[1]
-        instructions = instructions + STACK[int(package)]
+        instructions = instructions + STACK[int(shelf)]
     instructions = instructions + JUNCTION_TO_START + [DONE]
     return instructions
 
