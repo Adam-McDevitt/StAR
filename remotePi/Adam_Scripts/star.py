@@ -17,6 +17,7 @@ FOLLOW_BACK_DEPOSIT = 16  # until next junction
 FOLLOW_LEFT_DEPOSIT = 17  # until next junction
 GRAB = 7
 DROP = 8
+SET_HEIGHT_GROUND = 13 # for ground level
 SET_HEIGHT_LOWER_SHELF = 9  # for lower shelves
 SET_HEIGHT_ON_BOX = 10  # for on top of ground level boxes
 SET_HEIGHT_UPPER_SHELF = 12  # for upper shelves
