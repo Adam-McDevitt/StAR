@@ -47,6 +47,10 @@ MotorPIDs* test=new MotorPIDs();
 
 //--------------------Globals for motor control-------------------
 
+
+
+
+
 //PID SHIT
 float Kp = 2.0/3500.0;
 float Ki=0;
@@ -531,11 +535,37 @@ void setup() {
   digitalWrite(13, LOW);     // turn off Arduino's LED to indicate we are through with calibration
 
   // SETTING UP ROTARY ENCODER
+//  #define MOTOR_1_Kp 20
+//  #define MOTOR_2_Kp 20
+//  #define MOTOR_3_Kp 20
+//  #define MOTOR_4_Kp 20
+//
+//  #define MOTOR_1_Ki 0.8
+//  #define MOTOR_2_Ki 0.8
+//  #define MOTOR_3_Ki 0.8
+//  #define MOTOR_4_Ki 0.8
+//
+//  #define MOTOR_1_Kd 2
+//  #define MOTOR_2_Kd 2
+//  #define MOTOR_3_Kd 2
+//  #define MOTOR_4_Kd 2
+
+ 
+  float  MOTOR_Kp = 20;
+  float  MOTOR_Ki = 0.8;
+  float  MOTOR_Kd = 2;
+  
   test->MotorPIDsinit();
-  test->setup_PID(4,20,0.8,2);//motor,Kp,Ki,Kd
-  test->setup_PID(2,20,0.8,2);//motor,Kp,Ki,Kd
-  test->setup_PID(1,20,0.8,2);//motor,Kp,Ki,Kd
-  test->setup_PID(3,20,0.8,2);//motor,Kp,Ki,Kd
+
+  test->setup_PID(4,MOTOR_Kp,MOTOR_Ki,MOTOR_Kd);//motor,Kp,Ki,Kd
+//  test->setup_PID(2,MOTOR_Kp,MOTOR_Ki,MOTOR_Kd);//motor,Kp,Ki,Kd
+//  test->setup_PID(1,MOTOR_Kp,MOTOR_Ki,MOTOR_Kd);//motor,Kp,Ki,Kd
+//  test->setup_PID(3,MOTOR_Kp,MOTOR_Ki,MOTOR_Kd);//motor,Kp,Ki,Kd
+  
+//  test->setup_PID(4,20,0.8,2);//motor,Kp,Ki,Kd
+//  test->setup_PID(2,20,0.8,2);//motor,Kp,Ki,Kd
+//  test->setup_PID(1,20,0.8,2);//motor,Kp,Ki,Kd
+//  test->setup_PID(3,20,0.8,2);//motor,Kp,Ki,Kd
 
   Serial.println("Setup is DONE !!!"); 
 }
@@ -551,7 +581,7 @@ void loop() {
 //  Serial.print(position_front); // comment this line out if you are using raw values
 //  Serial.print(' ');
 
-  
+   //RIGHT
    int position_right_raw = qtrrcs[0].readLineBlack(sensorValues[0]) - ERROR_calib;
    int position_right = -position_right_raw;
 //  Serial.print(position_right); // comment this line out if you are using raw values
@@ -574,15 +604,21 @@ void loop() {
   updateForwardPID();
 //  test->setSetpoint(2,-1*DEFAULT_MOTOR_SPEED+0.5*abs(motors_speed));
 //  test->setSetpoint(4, -1*DEFAULT_MOTOR_SPEED+0.5*abs(motors_speed));
+
+//  test->setSetpoint(2,-1*DEFAULT_MOTOR_SPEED+0.5);
+//  test->setSetpoint(4, -1*DEFAULT_MOTOR_SPEED+0.5);
+
   test->setSetpoint(1,-1*motors_speed);
   test->setSetpoint(3,motors_speed);
 
-//  test->update_motor_PID(2);
-//  test->update_motor_PID(4);
+
   motorBackward(2,80);
   motorBackward(4,80);
   test->update_motor_PID(1);
   test->update_motor_PID(3);
-
+//  test->update_motor_PID(2);
+//  test->update_motor_PID(4);
+  Serial.println("After upade_motor_PID");
+  
 
 }

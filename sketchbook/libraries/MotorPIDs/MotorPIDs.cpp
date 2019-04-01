@@ -5,7 +5,7 @@
 
 
 float MotorPIDs::update_past(int motor_id,float new_error){
- 
+
  float sum=0;
  for(int i=0;i<PAST;i++){
    sum+=pasts[motor_id][i];
@@ -13,35 +13,52 @@ float MotorPIDs::update_past(int motor_id,float new_error){
  pasts[motor_id][past_counters[motor_id]]=new_error;
  past_counters[motor_id]= (past_counters[motor_id]+1)%PAST;
  return sum;
- 
+
  }
 
 bool MotorPIDs::check_change_forward(int motor_id,float power) {
   int id=motor_id-1;
-  float old= id;
+  float old= old_pows[id];
   float diff= old-power;
+  Serial.println("CHECKING FORWARD");
   if (abs(diff)>8) {
    old_pows[id]=power;
+      Serial.print("Power < 0\nmotor_id        power\n");
+      Serial.println(motor_id);
+      Serial.print("    ");
+      Serial.print(power);
     return true;
   }
   else{
+		Serial.print("FALSE CHANGE");
 		return false;
 	}
-	return false;
 }
-  
+
 void MotorPIDs::motor_move(int motor_id,float power){
+	delay(2000);
   if(MotorPIDs::check_change_forward(motor_id,power)){
 		if(power<0){
+      Serial.print("Power < 0\nmotor_id        power\n");
+      Serial.println(motor_id);
+      Serial.print("    ");
+      Serial.print(power);
 			motorBackward(motor_id,abs(power));
 		}
 		else if(power>=0){
 			motorForward(motor_id,abs(power));
+      Serial.print("Power < 0\nmotor_id        power\n");
+      Serial.println(motor_id);
+      Serial.print("    ");
+      Serial.print(power);
 		}
 		else{
 			Serial.println("[motor_move]:MOTOR POWER ERROR");
 		}
 	}
+
+
+
 }
 void MotorPIDs::MotorPIDsinit(){
    //velocities for all motors initialized to zero
@@ -71,30 +88,30 @@ void MotorPIDs::MotorPIDsinit(){
             MotorPIDs::pasts[i][j]=0;//2d array, can't initialize without for-loop, but C++ initializes to zero by default(check TODO)
           }
         }
-      
+
         for(int i=0;i < ROTARY_COUNT;i++){
           MotorPIDs::past_counters[i]=0;
         }
-        
+
         for(int i=0;i < OLD_POWS_SIZE; i++){
 					MotorPIDs::old_pows[i]=0;
 				}
 }
 
 void MotorPIDs::setup_PID(int motor_id, float Kp, float Ki, float Kd){
-    
+
     Kps[motor_id]=Kp;
     Kis[motor_id]=Ki;
     Kds[motor_id]=Kd;
     vels_deltas_old[motor_id]=0.0;
-    
-    
-    
+
+
+
     Serial.print("SETUP PID for motor [ ");
     Serial.print(motor_id);
     Serial.print(" ]: ");
 
-    
+
     Serial.print("Kp: ");
     Serial.print(Kps[motor_id]);
     Serial.print(" ");
@@ -106,7 +123,7 @@ void MotorPIDs::setup_PID(int motor_id, float Kp, float Ki, float Kd){
     Serial.print("Kd: ");
     Serial.print(Kds[motor_id]);
     Serial.print(" ");
-    
+
 }
 
 
@@ -121,6 +138,7 @@ void MotorPIDs::setSetpoint(int motor_id, float vel_desired){
 
 
 void MotorPIDs::update_motor_PID(int motor_id) {
+
   // Update motor speeds
   MotorPIDs::update_velocities();
   // calcualte new power
@@ -141,6 +159,7 @@ void MotorPIDs::update_motor_PID(int motor_id) {
   //Actually moving the motor to correct direction (or stopping) according to callback input
   //motor_move(motor_id,motor_pows[motor_id]);
   MotorPIDs::motor_move(motor_id,motor_pows[motor_id]);
+
 }
 
 
@@ -149,7 +168,7 @@ void MotorPIDs::update_motor_PID(int motor_id) {
 void MotorPIDs::update_velocities(){
   int repeats=3;
   for(int i=0;i<ROTARY_COUNT;i++){
-   velocities[i]=0.0; 
+   velocities[i]=0.0;
   }
   for(int i=0;i<repeats;i++){
     Wire.requestFrom(ROTARY_SLAVE_ADDRESS, ROTARY_COUNT);
@@ -157,13 +176,13 @@ void MotorPIDs::update_velocities(){
       velocities[i] += (float) (int8_t) Wire.read();  // Must cast to signed 8-bit type
       // Serial.print('INTERMEDIATE:');
       // Serial.println(velocities[i]);
-    }    
+    }
     delay(2);
   }
   for(int i=0;i<ROTARY_COUNT;i++){
-   velocities[i]=(velocities[i]/(float)repeats)*(PI/180)*500; 
+   velocities[i]=(velocities[i]/(float)repeats)*(PI/180)*500;
   }
-      
+
 }
 
 void MotorPIDs::printVelocities() {
@@ -171,13 +190,13 @@ void MotorPIDs::printVelocities() {
   Serial.print("Motor velocities: ");
 
   for (int i = 0; i < ROTARY_COUNT; i++) {
-    
+
     Serial.print(velocities[i]);
     Serial.print(' ');
-    
+
   }
   Serial.println();
-  
+
 }
 
 
